@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        @vite('resources/css/app.css')
+        <script async src="https://www.google.com/recaptcha/api.js"></script>
+        <title>Login</title>
+    </head>
+    <body class="h-screen bg-gray-100">
+        <div class="flex flex-col items-center justify-center">
+            <span class="my-5 text-3xl">Form Login</span>
+            @error("message")
+            <span class="bg-yellow-200 text-amber-700 text-center w-1/6 my-2 p-1">{{ $message }}</span>
+            @enderror
+            <div class="lg:w-1/4 md:w-1/3 sm:w-full">
+                <form action="{{ route("login.store") }}" method="post">
+                    @csrf
+                    @if($errors->has('name'))
+                        <span class="bg-red-600 text-white rounded-md">{{ $errors->first('name') }}</span>
+                    @endif
+                    <div class="flex justify-between my-2">
+                        <span class="w-1/4">Nama</span>
+                        <x-forms.input/>
+                    </div>
+                    @if($errors->has('password'))
+                        <span class="bg-red-600 text-white rounded-md">{{ $errors->first('password') }}</span>
+                    @endif
+                    <div class="flex justify-between my-2">
+                        <span class="w-1/4">Password</span>
+                        <x-forms.inputPassword/>
+                    </div>
+                    <div class="g-recaptcha mt-4 flex items-center justify-center" data-sitekey={{config('services.recaptcha.key')}}></div>
+                    <x-forms.submit message="Submit" class="bg-indigo-700 hover:bg-indigo-600"/>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
